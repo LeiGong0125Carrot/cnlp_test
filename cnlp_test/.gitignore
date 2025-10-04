@@ -12,3 +12,5 @@ cnlp_transformers/src/cnlp_transformers.egg-info/
 cnlp_transformers/src/sweep_results/
 wandb_hpt/wandb/
 wandb_hpt/umlsbert/
+wandb_hpt/sweep_*/
+*.log
