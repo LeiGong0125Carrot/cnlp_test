@@ -1,0 +1,13 @@
+
+cd cnlp-transformers/src目录下
+微调预训练模型
+python -m cnlpt.train_system_class --task_name sentiment --data_dir /bigtemp/nkw3mr/tmp --encoder_name roberta-base --do_train --do_eval --cache_dir cache/ --output_dir temp/ --overwrite_output_dir --evals_per_epoch 2 --num_train_epoch 1 --learning_rate 1e-5 --report_to none --save_strategy no --error_analysis --metric_for_best_model eval_loss --greater_is_better False --early_stopping_patience 3 --early_stopping_threshold 0.01
+
+训练CNN模型
+CUDA_VISIBLE_DEVICES=0 python -m cnlpt.train_system --task_name sentiment --data_dir /bigtemp/nkw3mr/tmp --tokenizer_name roberta-base --model cnn --cnn_embed_dim 100 --cnn_num_filters 25 --cnn_filter_sizes 1 2 3  --do_train --do_eval --cache_dir cache/ --output_dir temp/ --overwrite_output_dir --evals_per_epoch 2 --num_train_epochs 1 --learning_rate 1e-5 --report_to none --save_strategy no --error_analysis --metric_for_best_model eval_loss --greater_is_better False --early_stopping_patience 3 --early_stopping_threshold 0.01 --weight_classes
+
+训练LSTM模型
+CUDA_VISIBLE_DEVICES=0 python -m cnlpt.train_system --task_name sentiment --data_dir /bigtemp/nkw3mr/tmp --model lstm --tokenizer_name roberta-base --lstm_embed_dim 100 --lstm_hidden_size 100 --do_train --do_eval --do_predict --cache_dir cache/ --output_dir temp/ --overwrite_output_dir --evals_per_epoch 2 --num_train_epochs 1 --learning_rate 1e-5 --report_to none --save_strategy no --error_analysis --metric_for_best_model eval_loss --greater_is_better False --early_stopping_patience 3 --early_stopping_threshold 0.01 --weight_classes
+
+训练HIER模型
+CUDA_VISIBLE_DEVICES=0 python -m cnlpt.train_system --task_name sentiment --data_dir /bigtemp/nkw3mr/tmp --encoder_name roberta-base  --model hier --hier_num_layers 2 --hier_hidden_dim 2048 --hier_n_head 8 --hier_d_k 8 --hier_d_v 96 --hier_dropout 0.1 --max_seq_length 512 --chunk_len 128 --num_chunks 4  --do_train --do_eval --do_predict --cache_dir cache/ --output_dir temp/ --overwrite_output_dir --evals_per_epoch 2 --num_train_epochs 1 --learning_rate 1e-5 --report_to none --save_strategy no --error_analysis --metric_for_best_model eval_loss --greater_is_better False --early_stopping_patience 3 --early_stopping_threshold 0.01 --weight_classes

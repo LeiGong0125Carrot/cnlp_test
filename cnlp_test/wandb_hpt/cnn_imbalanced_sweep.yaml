@@ -1,0 +1,68 @@
+# CNN配置 - 针对极端不平衡数据(5% class 1)
+project: Concept-Text-Classification
+program: wandb_cnlp_cnn_train.py
+method: grid
+metric:
+  name: f1_class_1  # 关注少数类的F1分数
+  goal: maximize
+
+parameters:
+  tokenizer_name:
+    values: ['bionlp/bluebert_pubmed_uncased_L-24_H-1024_A-16']
+  
+  # 学习率 - CNN需要更高的学习率
+  learning_rate:
+    values: [5e-3, 1e-2]  # 提高学习率范围
+  
+  # 批次大小 - 较小的批次有助于学习少数类
+  batch_size:
+    values: [8, 16, 24]  # 使用较小批次
+  
+  # 早停阈值 - 提高以避免过早停止
+  early_stopping_threshold:
+    values: [0.01]  # 提高阈值
+  
+  # 早停耐心值
+  early_stopping_patience:
+    values: [5]  # 增加耐心值
+  
+  # 学习率调度器
+  lr_scheduler_type:
+    values: ["linear", "cosine"] # 2
+  
+  # 预热比例 - 帮助稳定训练
+  warmup_ratio:
+    # values: [0.1, 0.2]
+    values: [0]
+  
+  # CNN模型参数
+  model:
+    value: "cnn"
+  
+  # 嵌入维度 - 增大以捕获更多信息
+  cnn_embed_dim:
+    values: [256, 512]  # 使用更大的嵌入
+  
+  # 过滤器数量 - 增加以提升表达能力
+  cnn_num_filters:
+    values: [16, 25, 50]  # 更多过滤器
+  
+  # 过滤器大小 - 捕获不同粒度的特征
+  cnn_filter_sizes:
+    values:
+      - "1,2,3"
+      - "1,2,3,4,5"      # 更多样的过滤器大小
+      - "2,3,4,5,6"      # 稍大的过滤器
+  
+  # 训练轮数 - 需要更多轮次
+  num_train_epochs:
+    values: [20]  # 增加训练轮数
+  
+  # 梯度累积 - 模拟更大的批次
+  gradient_accumulation_steps:
+    values: [1, 2, 4]  # 有效批次大小会乘以这个值
+
+# 额外的命令行参数建议（在wandb_cnlp_cnn_train.py中添加）:
+# --fp16  # 使用混合精度训练
+# --dataloader_num_workers 4  # 加速数据加载
+# --seed 42  # 设置随机种子以确保可重复性

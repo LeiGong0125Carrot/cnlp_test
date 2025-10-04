@@ -1,0 +1,40 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+      - "dev-v[0-9]*"
+    paths:
+      - "src/**"
+      - "test/**"
+      - "pyproject.toml"
+  pull_request:
+    branches:
+      - main
+      - "dev-v[0-9]*"
+    paths:
+      - "src/**"
+      - "test/**"
+      - "pyproject.toml"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        id: setup-uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - name: Test with pytest
+        run: |
+          uv run --frozen --group test -p ${{ matrix.python-version }} pytest test/

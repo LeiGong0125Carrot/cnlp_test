@@ -1,0 +1,14 @@
+long-clinical-doc/datasets/
+long-clinical-doc/datasets_backup_20250921_141601.tar.gz
+cnlp_transformers/src/cache_dir/
+cnlp_transformers/src/cache/
+cache_dir/
+wandb/
+*.bin
+*.pth
+*.pt
+*.ckpt
+cnlp_transformers/src/cnlp_transformers.egg-info/
+cnlp_transformers/src/sweep_results/
+wandb_hpt/wandb/
+wandb_hpt/umlsbert/

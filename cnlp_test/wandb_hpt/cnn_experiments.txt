@@ -1,0 +1,1 @@
+在wandb_hpt directory底下，使用cnn_optimized_sweep.yaml，进行grid search

@@ -1,0 +1,38 @@
+project: VIB-Intepretable-Text-Classification
+program: wandb_cnlp_hier_train.py
+method: grid
+metric:
+  name: final_metric
+  goal: maximize
+
+parameters:
+  model:
+    value: "hier"
+  encoder_name:
+    values: ['bionlp/bluebert_pubmed_uncased_L-24_H-1024_A-16', 'bvanaken/CORe-clinical-outcome-biobert-v1', '/bigtemp/nkw3mr/cnlp_test/wandb_hpt/umlsbert'] # 3
+  learning_rate:
+    values: [1e-6, 5e-6, 1e-5, 5e-5, 1e-4, 5e-4] # 6
+  batch_size:
+    values: [4, 8, 16, 32] # 4
+  early_stopping_threshold:
+    values: [0.01] # 1
+  lr_scheduler_type:
+    values: ['linear', 'cosine']
+  
+  hierarchical_config:
+    values: [
+      {chunk_len: 128, num_chunks: 4, max_seq_length: 512},
+    ] # 2 (删除极端chunk设置)
+  
+  hier_num_layers:
+    values: [2, 3] # 2 (删除3层)
+  hier_hidden_dim:
+    values: [1024, 2048] # 2 (固定较小值)
+  hier_n_head:
+    value: 8 # 1 (固定)
+  hier_d_k:
+    value: 8 # 1 (固定)
+  hier_d_v:
+    value: 96 # 1 (固定)
+  hier_dropout:
+    value: 0.1 # 1 (固定)
